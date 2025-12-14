@@ -53,7 +53,6 @@ class EventLog(BaseModel):
     timestamp: str
 
 # ============= In-Memory Storage (for Phase 1) =============
-
 events_store = []
 proposition_cache = {}
 
@@ -99,7 +98,7 @@ async def get_suggestions(request: SuggestionRequest):
             latency_ms=round(latency_ms, 2),
             timestamp=datetime.utcnow().isoformat()
         )
-    
+        
     except Exception as e:
         logger.error(f"Error in /suggest: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
@@ -119,7 +118,7 @@ async def log_event(event: EventLog):
             "message": f"Event logged: {event.event_type}",
             "event_count": len(events_store)
         }
-    
+        
     except Exception as e:
         logger.error(f"Error logging event: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
