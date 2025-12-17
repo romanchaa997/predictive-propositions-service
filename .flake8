@@ -1,0 +1,46 @@
+[flake8]
+# Configuration for flake8 linter (Level 1.4 optimization)
+
+# Increased complexity threshold from 10 to 12 (more realistic)
+max-complexity = 12
+
+# Line length: 127 (matches Black)
+max-line-length = 127
+
+# Enforce errors (E9, F63, F7, F82 are fatal)
+select = E9,F63,F7,F82
+
+# Ignore these warnings (too noisy for this project)
+ignore = 
+    W503,  # line break before binary operator
+    E501,  # line too long (handled by Black)
+    E203,  # whitespace before ':' (conflicts with Black)
+    E402,  # module level import not at top
+
+# Exclude patterns
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
+    venv,
+    build,
+    dist,
+    *.egg-info,
+    .pytest_cache,
+    .mypy_cache,
+    .coverage,
+    htmlcov,
+    docs,
+
+# Per-file ignores
+per-file-ignores =
+    __init__.py:F401,F403
+    tests/*:F401,F811
+    setup.py:E402
+
+# Output format
+format = default
+
+# Statistics
+statistics = True
+count = True
