@@ -1,0 +1,67 @@
+name: Level 3 Staging Monitoring & Calibration
+
+on:
+  schedule:
+    # Run every 6 hours to collect calibration data
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+  push:
+    branches:
+      - staging
+    paths:
+      - '.github/ci_*.py'
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    name: 'Level 3 Staging Monitor'
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: staging
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          pip install pytest pytest-json-report coverage scikit-learn numpy
+      
+      - name: Profile CI Pipeline
+        id: profiler
+        run: |
+          python .github/ci_profiler.py 2>&1 | tee profiler_output.log
+        continue-on-error: true
+      
+      - name: Run tests & collect data
+        id: test_data
+        run: |
+          pytest --json-report --json-report-file=.pytest_json_report -v 2>&1 || true
+          python .github/ci_test_data_collector.py 2>&1 | tee test_data_output.log
+        continue-on-error: true
+      
+      - name: ML Predictions & Risk Assessment
+        id: predictions
+        run: |
+          python .github/ci_ml_predictor.py
+        continue-on-error: true
+      
+      - name: Generate Calibration Report
+        run: |
+          mkdir -p .github/staging_reports
+          echo '# Level 3 Calibration Report' > .github/staging_reports/report.md
+          echo "**Date**: $(date -u)" >> .github/staging_reports/report.md
+          echo "**Branch**: staging" >> .github/staging_reports/report.md
+          echo "**Commit**: ${{ github.sha }}" >> .github/staging_reports/report.md
+      
+      - name: Upload calibration reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: level3-calibration-reports
+          path: .github/staging_reports/
+          retention-days: 30
