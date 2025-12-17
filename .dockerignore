@@ -1,0 +1,77 @@
+# Build artifacts
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+*.egg-info
+.eggs
+dist
+build
+
+# Version control
+.git
+.gitignore
+.gitattributes
+.github
+
+# Testing & Coverage
+tests/
+test_*.py
+*_test.py
+.pytest_cache
+.coverage
+coverage.xml
+htmlcov
+
+# Development
+.venv
+venv/
+ENV/
+env/
+.env
+.env.local
+pipenv.lock
+.DS_Store
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# Documentation
+docs/
+README.md
+*.md
+
+# Logs & Temporary
+logs/
+*.log
+.tmp
+tmp/
+
+# CI/CD
+.github/
+.gitlab-ci.yml
+.travis.yml
+Jenkinsfile
+
+# Project-specific
+.metrics/
+metrics/
+.flake8
+pyproject.toml
+setup.py
+setup.cfg
+tox.ini
+.pre-commit-config.yaml
+
+# Large files (use .dockerignore to reduce context)
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# Docker files (not needed in image)
+Dockerfile*
+.docker*
+docker-compose*
