@@ -60,7 +60,7 @@ jobs:
           echo "**Commit**: ${{ github.sha }}" >> .github/staging_reports/report.md
       
       - name: Upload calibration reports
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: level3-calibration-reports
           path: .github/staging_reports/
